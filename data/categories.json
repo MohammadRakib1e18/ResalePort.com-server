@@ -9,43 +9,33 @@
     "index": "2",
     "category_name": "Chest and Arms",
     "img": "https://i.ibb.co/ftGr3TN/chest1.webp",
-    "categoryList": [
-      "Bench Machine",
-      "Chest Press",
-      "Seated Dip Machine"
-    ]
+    "categoryList": ["Bench Machine", "Chest Press"]
   },
   {
     "index": "3",
     "category_name": "Free Weights",
     "img": "https://i.ibb.co/7G6nRcW/free-weight1.jpg",
-    "categoryList": [
-      "Dumbbells",
-      "Fixed Barbells",
-      "Plate Weights",
-      "Kettlebells"
-    ]
+    "categoryList": ["Dumbbells", "Fixed Barbells", "Plate Weights"]
   },
   {
     "index": "4",
     "category_name": "Leg Exercise",
     "img": "https://i.ibb.co/7t4ShkN/Leg1.webp",
-    "categoryList": ["Leg Curl", "Seated Calf", "Standing Calf"]
+    "categoryList": ["Leg Curl", "Calf Press"]
   },
   {
     "index": "5",
     "category_name": "Shoulder Training",
     "img": "https://i.ibb.co/hyNkd6t/Shoulder.webp",
-    "categoryList": ["Shoulder", "Overhead Press", "Lateral Raises"]
+    "categoryList": ["Overhead Press", "Kettlebells"]
   },
   {
     "index": "6",
     "category_name": "Back Training",
     "img": "https://i.ibb.co/n3PSRJJ/Back1.webp",
     "categoryList": [
-      "Assisted Pull-Up Machine",
+      "Assisted Pull-Up",
       "Low Seated Row",
-      "Back Extension",
       "T-Bar Row"
     ]
   }
