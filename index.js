@@ -8,8 +8,10 @@ require("dotenv").config();
 app.use(cors());
 app.use(express.json());
 
-app.get("/", async (req, res) => {
-  res.send("server is running well");
+const categories = require('./data/categories');
+
+app.get("/categories", async (req, res) => {
+  res.send(categories);
 });
 
 app.listen(port, () => {
