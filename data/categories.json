@@ -1,32 +1,52 @@
 [
   {
     "index": "1",
-    "name": "Cardio Exercise",
-    "img": "https://i.ibb.co/WF120w2/cardio1.webp"
+    "category_name": "Cardio Exercise",
+    "img": "https://i.ibb.co/WF120w2/cardio1.webp",
+    "categoryList": ["Treadmills", "Recline Bikes", "Cross Trainers"]
   },
   {
     "index": "2",
-    "name": "Chest and Arms",
-    "img": "https://i.ibb.co/ftGr3TN/chest1.webp"
+    "category_name": "Chest and Arms",
+    "img": "https://i.ibb.co/ftGr3TN/chest1.webp",
+    "categoryList": [
+      "Bench Machine",
+      "Chest Press",
+      "Seated Dip Machine"
+    ]
   },
   {
     "index": "3",
-    "name": "Free Weights",
-    "img": "https://i.ibb.co/7G6nRcW/free-weight1.jpg"
+    "category_name": "Free Weights",
+    "img": "https://i.ibb.co/7G6nRcW/free-weight1.jpg",
+    "categoryList": [
+      "Dumbbells",
+      "Fixed Barbells",
+      "Plate Weights",
+      "Kettlebells"
+    ]
   },
   {
     "index": "4",
-    "name": "Leg Exercise",
-    "img": "https://i.ibb.co/7t4ShkN/Leg1.webp"
+    "category_name": "Leg Exercise",
+    "img": "https://i.ibb.co/7t4ShkN/Leg1.webp",
+    "categoryList": ["Leg Curl", "Seated Calf", "Standing Calf"]
   },
   {
     "index": "5",
-    "name": "Shoulder Training",
-    "img": "https://i.ibb.co/hyNkd6t/Shoulder.webp"
+    "category_name": "Shoulder Training",
+    "img": "https://i.ibb.co/hyNkd6t/Shoulder.webp",
+    "categoryList": ["Shoulder", "Overhead Press", "Lateral Raises"]
   },
   {
     "index": "6",
-    "name": "Back Training",
-    "img": "https://i.ibb.co/n3PSRJJ/Back1.webp"
+    "category_name": "Back Training",
+    "img": "https://i.ibb.co/n3PSRJJ/Back1.webp",
+    "categoryList": [
+      "Assisted Pull-Up Machine",
+      "Low Seated Row",
+      "Back Extension",
+      "T-Bar Row"
+    ]
   }
 ]
