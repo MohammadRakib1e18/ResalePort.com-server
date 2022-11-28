@@ -31,6 +31,13 @@ async function run() {
       res.send(categories);
     });
 
+    app.get('/singleCategory', async(req, res)=>{
+      const category = req.query.category;
+      const query = { category_name : category};
+      const result = await categoryCollection.findOne(query);
+      res.send(result);
+    })
+
     app.get("/category/:id", async(req, res) => {
       const id = req.params.id;
       const query = {
@@ -40,12 +47,31 @@ async function run() {
       res.send(product);
     });
 
-    app.post('/users', async(req, res)=>{
-      const user = req.body;
-      const result = await userCollection.insertOne(user);
-      console.log(result);
+    app.get("/user", async(req, res)=>{
+      const email = req.query.email;
+      const query={email:email};
+      const result = await userCollection.findOne(query);
+      res.send(result);
+    });
+
+    app.post('/product', async(req, res)=>{
+      const product = req.body;
+      const result = await productCollection.insertOne(product);
       res.send(result);
     })
+
+    app.post('/users', async(req, res)=>{
+      const user = req.body;
+      const query={email:user.email};
+      const alreadyUser = await userCollection.findOne(query);
+      if(alreadyUser?.email === user?.email){
+        res.send({message:'already a registered user'})
+      }
+      const result = await userCollection.insertOne(user);
+      res.send(result);
+    })
+
+    
 
   } finally {
   }
