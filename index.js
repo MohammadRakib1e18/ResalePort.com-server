@@ -23,6 +23,7 @@ async function run() {
   try {
     const categoryCollection = client.db("resalePort").collection("categories");
     const productCollection = client.db("resalePort").collection("products");
+    const userCollection = client.db("resalePort").collection("users");
 
     app.get("/categories", async(req, res) => {
       const query = {};
@@ -38,6 +39,13 @@ async function run() {
       const product = await productCollection.find(query).toArray();
       res.send(product);
     });
+
+    app.post('/users', async(req, res)=>{
+      const user = req.body;
+      const result = await userCollection.insertOne(user);
+      console.log(result);
+      res.send(result);
+    })
 
   } finally {
   }
