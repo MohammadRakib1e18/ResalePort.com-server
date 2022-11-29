@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId, ObjectID } = require("mongodb");
 const port = process.env.PORT || 5000;
 
 require("dotenv").config();
@@ -24,7 +24,9 @@ async function run() {
     const categoryCollection = client.db("resalePort").collection("categories");
     const productCollection = client.db("resalePort").collection("products");
     const userCollection = client.db("resalePort").collection("users");
-    const advertisedCollection = client.db("resalePort").collection("advertised");
+    const advertisedCollection = client
+      .db("resalePort")
+      .collection("advertised");
 
     app.get("/categories", async (req, res) => {
       const query = {};
@@ -50,8 +52,19 @@ async function run() {
 
     app.get("/user", async (req, res) => {
       const email = req.query.email;
+
       const query = { email: email };
-      const result = await userCollection.findOne(query);
+      result = await userCollection.findOne(query);
+
+      res.send(result);
+    });
+
+    app.get("/statusdUser", async (req, res) => {
+      const status = req.query.status;
+      const query = { status: status };
+
+      const result = await userCollection.find(query).toArray();
+      console.log(result);
       res.send(result);
     });
 
@@ -87,12 +100,11 @@ async function run() {
       res.send(products);
     });
 
-    app.post("/advertisedProducts", async(req, res)=>{
+    app.post("/advertisedProducts", async (req, res) => {
       const product = req.body;
       const result = await advertisedCollection.insertOne(product);
       res.send(result);
     });
-
 
     app.post("/product", async (req, res) => {
       const product = req.body;
@@ -110,12 +122,20 @@ async function run() {
       const result = await userCollection.insertOne(user);
       res.send(result);
     });
+
+    app.delete("/user/:id", async(req, res)=>{
+      const id = req.params;
+      const filter = { _id: ObjectId(id) };
+      const result = await userCollection.deleteOne(filter);
+      console.log(result);
+      res.send(result);
+    })
+
+
   } finally {
   }
 }
 run().catch((err) => console.log("Error: ", err));
-
-
 
 app.listen(port, () => {
   console.log(`mongodb db server is running, ${port}`);
