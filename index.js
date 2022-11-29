@@ -11,6 +11,7 @@ app.use(express.json());
 
 const categories = require("./data/categories.json");
 const products = require("./data/products.json");
+const { json } = require("express");
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ct9it9z.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
@@ -24,6 +25,7 @@ async function run() {
     const categoryCollection = client.db("resalePort").collection("categories");
     const productCollection = client.db("resalePort").collection("products");
     const userCollection = client.db("resalePort").collection("users");
+    const orderCollection = client.db("resalePort").collection("orders");
     const advertisedCollection = client
       .db("resalePort")
       .collection("advertised");
@@ -100,6 +102,12 @@ async function run() {
       res.send(products);
     });
 
+    app.get("/order", async(req, res)=>{
+      const query={};
+      const orders = await orderCollection.find(query).toArray();
+      res.send(orders);
+    })
+
     app.post("/advertisedProducts", async (req, res) => {
       const product = req.body;
       const result = await advertisedCollection.insertOne(product);
@@ -123,11 +131,24 @@ async function run() {
       res.send(result);
     });
 
+    app.post("/order", async(req, res)=>{
+      const order = req.body;
+      const result = await orderCollection.insertOne(order);
+      res.send(result);
+    })
+
     app.delete("/user/:id", async(req, res)=>{
       const id = req.params;
       const filter = { _id: ObjectId(id) };
       const result = await userCollection.deleteOne(filter);
       console.log(result);
+      res.send(result);
+    })
+
+    app.delete("/order/:id", async(req, res)=>{
+      const id = req.params;
+      const filter = {_id : ObjectId(id)};
+      const result = await orderCollection.deleteOne(filter);
       res.send(result);
     })
 
