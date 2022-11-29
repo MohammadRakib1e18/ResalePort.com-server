@@ -103,7 +103,8 @@ async function run() {
     });
 
     app.get("/order", async(req, res)=>{
-      const query={};
+      const email = req.query.email;
+      const query={email:email};
       const orders = await orderCollection.find(query).toArray();
       res.send(orders);
     })
@@ -133,6 +134,7 @@ async function run() {
 
     app.post("/order", async(req, res)=>{
       const order = req.body;
+      console.log(order);
       const result = await orderCollection.insertOne(order);
       res.send(result);
     })
@@ -151,6 +153,7 @@ async function run() {
       const result = await orderCollection.deleteOne(filter);
       res.send(result);
     })
+
 
 
   } finally {
