@@ -26,6 +26,8 @@ async function run() {
     const productCollection = client.db("resalePort").collection("products");
     const userCollection = client.db("resalePort").collection("users");
     const orderCollection = client.db("resalePort").collection("orders");
+    const wishlistCollection = client.db("resalePort").collection("wishList");
+
     const advertisedCollection = client
       .db("resalePort")
       .collection("advertised");
@@ -109,6 +111,13 @@ async function run() {
       res.send(orders);
     })
 
+    app.get("/wishList", async (req, res) => {
+      const email = req.query.email;
+      const query = { buyer_email: email };
+      const wishList = await wishlistCollection.find(query).toArray();
+      res.send(wishList);
+    });
+
     app.post("/advertisedProducts", async (req, res) => {
       const product = req.body;
       const result = await advertisedCollection.insertOne(product);
@@ -139,6 +148,12 @@ async function run() {
       res.send(result);
     })
 
+    app.post('/wishList', async(req, res)=>{
+      const wishItem = req.body;
+      const result = await wishlistCollection.insertOne(wishItem);
+      res.send(result);
+    })
+
     app.delete("/user/:id", async(req, res)=>{
       const id = req.params;
       const filter = { _id: ObjectId(id) };
@@ -151,6 +166,13 @@ async function run() {
       const id = req.params;
       const filter = {_id : ObjectId(id)};
       const result = await orderCollection.deleteOne(filter);
+      res.send(result);
+    })
+
+    app.delete("/wishList/:id", async(req, res)=>{
+      const id = req.params;
+      const filter = {_id : ObjectId(id)};
+      const result = await wishlistCollection.deleteOne(filter);
       res.send(result);
     })
 
