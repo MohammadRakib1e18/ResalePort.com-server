@@ -1,7 +1,12 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const { MongoClient, ServerApiVersion, ObjectId, ObjectID } = require("mongodb");
+const {
+  MongoClient,
+  ServerApiVersion,
+  ObjectId,
+  ObjectID,
+} = require("mongodb");
 const port = process.env.PORT || 5000;
 
 require("dotenv").config();
@@ -99,17 +104,22 @@ async function run() {
 
     //advertisedProducts
     app.get("/advertisedProducts", async (req, res) => {
+      let range = req.query.range;
+      range = parseInt(range);
       const query = {};
-      const products = await advertisedCollection.find(query).toArray();
+      const products = await advertisedCollection
+        .find(query)
+        .limit(range)
+        .toArray();
       res.send(products);
     });
 
-    app.get("/order", async(req, res)=>{
+    app.get("/order", async (req, res) => {
       const email = req.query.email;
-      const query={email:email};
+      const query = { email: email };
       const orders = await orderCollection.find(query).toArray();
       res.send(orders);
-    })
+    });
 
     app.get("/wishList", async (req, res) => {
       const email = req.query.email;
@@ -118,10 +128,44 @@ async function run() {
       res.send(wishList);
     });
 
+    app.get("/buyers/myBuyer", async (req, res) => {
+      const email = req.query.email;
+      const query = { seller_email: email };
+      const orders = await orderCollection.find(query).toArray();
+      let users = [];
+
+      orders.forEach((order) => {
+        let matchedFound=false;
+        users.forEach(user=>{
+          if(user === order.email){
+            matchedFound=true;
+          }
+        })
+        if(matchedFound===false) users.push(order.email);
+      });
+      // uses is the list of unique my ordered users.
+      // now, find their info from userCollection
+
+      const loginUsers = await userCollection.find({}).toArray();
+      
+      const myUsers = loginUsers.filter(loginUser => users.includes(loginUser.email));
+      console.log(myUsers);
+
+      res.send(myUsers);
+    });
+
     app.post("/advertisedProducts", async (req, res) => {
-      const product = req.body;
-      const result = await advertisedCollection.insertOne(product);
-      res.send(result);
+      const advertisedItem = req.body;
+      const query = {
+        image_url: advertisedItem.image_url,
+      };
+      const isFound = await advertisedCollection.findOne(query);
+      if (isFound) {
+        res.send({ message: "alreadyAdded" });
+      } else {
+        const result = await advertisedCollection.insertOne(advertisedItem);
+        res.send(result);
+      }
     });
 
     app.post("/product", async (req, res) => {
@@ -141,43 +185,57 @@ async function run() {
       res.send(result);
     });
 
-    app.post("/order", async(req, res)=>{
+    app.post("/order", async (req, res) => {
       const order = req.body;
-      console.log(order);
-      const result = await orderCollection.insertOne(order);
-      res.send(result);
-    })
+      const query = {
+        image_url: order.image_url,
+        email: order.email,
+      };
+      const isFound = await orderCollection.findOne(query);
+      if (isFound) {
+        res.send({ message: "alreadyAdded" });
+      } else {
+        const result = await orderCollection.insertOne(order);
+        res.send(result);
+      }
+    });
 
-    app.post('/wishList', async(req, res)=>{
+    app.post("/wishList", async (req, res) => {
       const wishItem = req.body;
-      const result = await wishlistCollection.insertOne(wishItem);
-      res.send(result);
-    })
+      const query = {
+        image_url: wishItem.image_url,
+        buyer_email: wishItem.buyer_email,
+      };
+      const isFound = await wishlistCollection.findOne(query);
+      if (isFound) {
+        res.send({ message: "alreadyAdded" });
+      } else {
+        const result = await wishlistCollection.insertOne(wishItem);
+        res.send(result);
+      }
+    });
 
-    app.delete("/user/:id", async(req, res)=>{
+    app.delete("/user/:id", async (req, res) => {
       const id = req.params;
       const filter = { _id: ObjectId(id) };
       const result = await userCollection.deleteOne(filter);
       console.log(result);
       res.send(result);
-    })
+    });
 
-    app.delete("/order/:id", async(req, res)=>{
+    app.delete("/order/:id", async (req, res) => {
       const id = req.params;
-      const filter = {_id : ObjectId(id)};
+      const filter = { _id: ObjectId(id) };
       const result = await orderCollection.deleteOne(filter);
       res.send(result);
-    })
+    });
 
-    app.delete("/wishList/:id", async(req, res)=>{
+    app.delete("/wishList/:id", async (req, res) => {
       const id = req.params;
-      const filter = {_id : ObjectId(id)};
+      const filter = { _id: ObjectId(id) };
       const result = await wishlistCollection.deleteOne(filter);
       res.send(result);
-    })
-
-
-
+    });
   } finally {
   }
 }
